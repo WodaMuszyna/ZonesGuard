@@ -1,0 +1,6 @@
+name: ZonesGuard
+main: me.wodamuszyna.zones.Main
+version: 1.0
+author: WodaMuszyna
+commands:
+  zg:
