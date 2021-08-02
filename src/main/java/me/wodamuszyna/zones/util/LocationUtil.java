@@ -1,5 +1,6 @@
 package me.wodamuszyna.zones.util;
 
+import me.wodamuszyna.zones.Main;
 import me.wodamuszyna.zones.data.Zone;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,6 +8,15 @@ import org.bukkit.Location;
 public class LocationUtil {
     public static boolean isInZone(Zone z, Location loc) {
         return loc.toVector().isInAABB(z.getMin().toVector(), z.getMax().toVector());
+    }
+
+    public static Zone isInZone(Location loc){
+        for(Zone z : Main.getManager().getZones()){
+            if(loc.toVector().isInAABB(z.getMin().toVector(), z.getMax().toVector())){
+                return z;
+            }
+        }
+        return null;
     }
 
     public static Location getLocation(String str) {
