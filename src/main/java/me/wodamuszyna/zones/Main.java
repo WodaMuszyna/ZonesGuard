@@ -3,6 +3,8 @@ package me.wodamuszyna.zones;
 import me.wodamuszyna.zones.commands.ZonesCommand;
 import me.wodamuszyna.zones.config.Config;
 import me.wodamuszyna.zones.database.Database;
+import me.wodamuszyna.zones.listeners.BlockListener;
+import me.wodamuszyna.zones.listeners.PlayerListener;
 import me.wodamuszyna.zones.managers.ZoneManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -38,10 +40,13 @@ public class Main extends JavaPlugin {
         manager = new ZoneManager();
         manager.init();
         getCommand("zg").setExecutor(new ZonesCommand());
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
     }
 
     @Override
     public void onDisable() {
+        manager.save();
         db.disconnect();
         db = null;
         ConfigurationSerialization.unregisterClass(Config.class);

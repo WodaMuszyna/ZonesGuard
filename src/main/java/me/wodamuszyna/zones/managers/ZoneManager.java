@@ -55,26 +55,33 @@ public class ZoneManager {
     }
 
     public StateFlag.State parseInput(String s){
-        if(s.equalsIgnoreCase("allow")){
+        if(s.equalsIgnoreCase("allow"))
             return StateFlag.State.ALLOW;
-        }
-        if(s.equalsIgnoreCase("deny")){
+        if(s.equalsIgnoreCase("deny"))
             return StateFlag.State.DENY;
-        }
-        if(s.equalsIgnoreCase("none")){
+        if(s.equalsIgnoreCase("none"))
             return null;
-        }
         throw new InvalidParameterException("Invalid parameter, expected allow/deny/none");
     }
 
+    public String parseOutput(StateFlag.State state){
+        if(state == null) return "none";
+        if(state.equals(StateFlag.State.ALLOW))
+            return "allow";
+        if(state.equals(StateFlag.State.DENY))
+            return "deny";
+        return "none";
+    }
+
     public boolean allows(Zone z, StateFlag... flags){
-        boolean allows = false;
+        boolean allows = true;
         for(StateFlag flag : flags){
-            if(z.getFlags().get(flag).equals(StateFlag.State.DENY)){
-                return false;
-            }
+            if(z.getFlags().get(flag) == null)
+                continue;
+            if(z.getFlags().get(flag).equals(StateFlag.State.DENY))
+                allows = false;
             if(z.getFlags().get(flag).equals(StateFlag.State.ALLOW)){
-                allows = true;
+                return true;
             }
         }
         return allows;
@@ -88,6 +95,18 @@ public class ZoneManager {
             }
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public void save(){
+        for(Zone z : this.getZones()){
+            if(z.isDirty()){
+                try {
+                    z.insert();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

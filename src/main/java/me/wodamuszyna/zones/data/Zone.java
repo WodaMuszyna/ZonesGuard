@@ -16,6 +16,7 @@ public class Zone {
     private Location min;
     private Location max;
     private Map<StateFlag, StateFlag.State> flags;
+    private boolean dirty;
 
     public Zone(ResultSet rs) throws SQLException{
         this.name = rs.getString("name");
@@ -24,6 +25,7 @@ public class Zone {
         Blob blob = rs.getBlob("flags");
         this.flags = DbUtil.deserializeFlags(blob.getBytes(1L, (int)blob.length()));
         blob.free();
+        this.dirty = false;
         Main.getManager().addZone(this);
     }
 
@@ -37,6 +39,7 @@ public class Zone {
         }catch (SQLException ex){
             ex.printStackTrace();
         }
+        this.dirty = false;
         Main.getManager().addZone(this);
     }
 
@@ -72,5 +75,9 @@ public class Zone {
         this.flags = flags;
     }
 
-    private void insert() throws SQLException { Main.getInstance().db.update("INSERT INTO `zonesguard_zones` (`name`, `min`, `max`, `flags`) VALUES (?)", this.name, LocationUtil.toString(this.min), LocationUtil.toString(this.max), new SerialBlob(DbUtil.serializeFlags(flags)));}
+    public boolean isDirty(){ return dirty; }
+
+    public void markDirty(){ this.dirty = true; }
+
+    public void insert() throws SQLException { Main.getInstance().db.update("INSERT INTO `zonesguard_zones` (`name`, `min`, `max`, `flags`) VALUES (?, ?, ?, ?)", this.name, LocationUtil.toString(this.min), LocationUtil.toString(this.max), new SerialBlob(DbUtil.serializeFlags(flags)));}
 }

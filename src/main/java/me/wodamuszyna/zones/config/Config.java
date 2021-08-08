@@ -12,8 +12,9 @@ import java.util.TreeMap;
 
 @SerializableAs("Zones")
 public class Config implements ConfigurationSerializable {
+    public String notAllowed;
     public Config(Map<String, Object> m){
-
+        this.notAllowed = "You are not allowed to do that here!";
         deserialize(m, this);
     }
 

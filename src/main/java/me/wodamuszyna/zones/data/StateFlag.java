@@ -1,9 +1,10 @@
 package me.wodamuszyna.zones.data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StateFlag{
+public class StateFlag implements Serializable {
     private String name;
     private boolean def;
 

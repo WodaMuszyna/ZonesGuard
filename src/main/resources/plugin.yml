@@ -2,5 +2,7 @@ name: ZonesGuard
 main: me.wodamuszyna.zones.Main
 version: 1.0
 author: WodaMuszyna
+api-version: 1.17
+softdepend: [WorldEdit]
 commands:
   zg:

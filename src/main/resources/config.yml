@@ -4,3 +4,6 @@ mysql:
   database: test
   username: root
   password:
+zones:
+  ==: Zones
+  notAllowed: "You are not allowed to do that here!"
