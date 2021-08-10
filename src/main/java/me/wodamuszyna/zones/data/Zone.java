@@ -79,5 +79,5 @@ public class Zone {
 
     public void markDirty(){ this.dirty = true; }
 
-    public void insert() throws SQLException { Main.getInstance().db.update("INSERT INTO `zonesguard_zones` (`name`, `min`, `max`, `flags`) VALUES (?, ?, ?, ?)", this.name, LocationUtil.toString(this.min), LocationUtil.toString(this.max), new SerialBlob(DbUtil.serializeFlags(flags)));}
+    public void insert() throws SQLException { Main.getInstance().db.update("INSERT INTO `zonesguard_zones` (`name`, `min`, `max`, `flags`) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, min=?, max=?, flags=?", this.name, LocationUtil.toString(this.min), LocationUtil.toString(this.max), new SerialBlob(DbUtil.serializeFlags(flags)), this.name, LocationUtil.toString(this.min), LocationUtil.toString(this.max), new SerialBlob(DbUtil.serializeFlags(flags)));}
 }
