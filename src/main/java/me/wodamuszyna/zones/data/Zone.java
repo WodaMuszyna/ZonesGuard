@@ -31,8 +31,8 @@ public class Zone {
 
     public Zone(String name, Location min, Location max){
         this.name = name;
-        this.min = new Location(min.getWorld(), min.getX(), 0, min.getZ(), min.getYaw(), min.getPitch());
-        this.max = new Location(max.getWorld(), max.getX(), 256, max.getZ(), max.getYaw(), max.getPitch());
+        this.min = min;
+        this.max = max;
         this.flags = StateFlag.Registry.getFlags();
         try {
             insert();
